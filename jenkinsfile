@@ -1,0 +1,76 @@
+pipeline {
+    agent any
+    
+    tools {
+        jdk 'JDK17'
+        maven 'Maven3'
+    }
+
+    stages {
+        stage('Git Checkout') {
+            steps {
+                git branch: 'main', credentialsId: 'Github-token', url: 'https://github.com/rajkumardubey10/enterprise-jenkins-devsecops.git'
+            }
+        }
+        
+        stage('Secret Scan - Gitleaks') {
+            steps {
+                sh '''
+                 gitleaks detect --source . -r report-gitleaks.txt
+                '''
+            }
+        }
+        
+        stage('Code Compile') {
+            steps {
+                sh 'mvn clean compile'
+            }
+        }
+        
+        stage('Test Code') {
+            steps {
+                sh 'mvn test -DSkipTest'
+            }
+        }
+        
+    
+        
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('Sonar') {
+
+                    sh '''
+                    mvn sonar:sonar \
+                    -Dsonar.projectKey=My-project
+                    '''
+                }
+            }
+        }
+        
+        stage('Trivy Filesystem Scan') {
+            steps {
+                sh '''
+                trivy fs --exit-code 1 \
+                --format table  \
+                -o trivy-report.txt \
+                --exit-code 0 \
+                .
+                '''
+            }
+        }
+        
+        stage('Quality Gate') {
+
+            steps {
+
+                timeout(time: 5, unit: 'MINUTES') {
+
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-token'
+
+                }
+            }
+        }
+        
+        
+    }
+}
