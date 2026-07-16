@@ -20,16 +20,21 @@ pipeline {
                 '''
             }
         }
+        stage('Prepare Build') {
+            steps {
+               sh 'chmod +x mvnw'
+            }
+        }
         
         stage('Code Compile') {
             steps {
-                sh 'mvn clean compile'
+                sh './mvnw clean compile'
             }
         }
         
         stage('Test Code') {
             steps {
-                sh 'mvn test -DSkipTest'
+                sh './mvnw test '
             }
         }
         
@@ -40,7 +45,7 @@ pipeline {
                 withSonarQubeEnv('Sonar') {
 
                     sh '''
-                    mvn sonar:sonar \
+                    ./mvnw sonar:sonar \
                     -Dsonar.projectKey=My-project
                     '''
                 }
