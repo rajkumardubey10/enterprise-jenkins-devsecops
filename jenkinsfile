@@ -26,6 +26,18 @@ pipeline {
                sh 'chmod +x mvnw'
             }
         }
+
+        stage('Import GPG Key') {
+            steps {
+                withCredentials([
+                    file(credentialsId: 'gpg-private-key', variable: 'GPG_KEY')
+                ]) {
+                    sh '''
+                        gpg --batch --import "$GPG_KEY"
+                    '''
+                }
+            }
+        }
         
         stage('Build & Unit Test') {
             steps {
@@ -74,17 +86,7 @@ pipeline {
             }
         }
 
-        stage('Import GPG Key') {
-            steps {
-                withCredentials([
-                    file(credentialsId: 'gpg-private-key', variable: 'GPG_KEY')
-                ]) {
-                    sh '''
-                        gpg --batch --import "$GPG_KEY"
-                    '''
-                }
-            }
-        }
+        
 
         stage('Publish Artifact to Nexus') {
             steps {
