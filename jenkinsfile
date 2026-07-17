@@ -27,15 +27,9 @@ pipeline {
             }
         }
         
-        stage('Code Compile') {
+        stage('Build & Unit Test') {
             steps {
-                sh './mvnw clean compile'
-            }
-        }
-        
-        stage('Test Code') {
-            steps {
-                sh './mvnw test '
+                sh './mvnw clean verify'
             }
         }
         
@@ -46,25 +40,14 @@ pipeline {
                 withSonarQubeEnv('Sonar') {
 
                     sh '''
-                    ./mvnw clean verify sonar:sonar \
+                    ./mvnw sonar:sonar \
                     -Dsonar.projectKey=My-project
                     '''
                 }
             }
         }
         
-        stage('Trivy Filesystem Scan') {
-            steps {
-                sh '''
-                trivy fs \
-                --format json  \
-                -o trivy-report.json \
-                --severity HIGH,CRITICAL \
-                --exit-code 1 \
-                .
-                '''
-            }
-        }
+    
         
         stage('Quality Gate') {
 
@@ -75,6 +58,18 @@ pipeline {
                     waitForQualityGate abortPipeline: true, credentialsId: 'sonar-token'
 
                 }
+            }
+        }
+
+        stage('Trivy SBOM Scan') {
+            steps {
+                sh '''
+                trivy sbom target/cyclonedx.json \
+                --format json \
+                --output trivy-sbom-report.json \
+                --severity HIGH,CRITICAL \
+                --exit-code 1
+                '''
             }
         }
         
