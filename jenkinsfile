@@ -3,7 +3,7 @@ pipeline {
     
     tools {
         jdk 'JDK17'
-        maven 'Maven3'
+        
     }
 
     stages {
@@ -16,7 +16,8 @@ pipeline {
         stage('Secret Scan - Gitleaks') {
             steps {
                 sh '''
-                 gitleaks detect --source . -r report-gitleaks.txt
+                 gitleaks detect --source . -r report-gitleaks.txt \
+                 --exit-code 1
                 '''
             }
         }
@@ -55,10 +56,11 @@ pipeline {
         stage('Trivy Filesystem Scan') {
             steps {
                 sh '''
-                trivy fs --exit-code 1 \
-                --format table  \
-                -o trivy-report.txt \
-                --exit-code 0 \
+                trivy fs \
+                --format json  \
+                -o trivy-report.json \
+                --severity HIGH,CRITICAL \
+                --exit-code 1 \
                 .
                 '''
             }
