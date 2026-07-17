@@ -46,7 +46,7 @@ pipeline {
                 withSonarQubeEnv('Sonar') {
 
                     sh '''
-                    ./mvnw sonar:sonar \
+                    ./mvnw clean verify sonar:sonar \
                     -Dsonar.projectKey=My-project
                     '''
                 }
