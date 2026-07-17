@@ -72,6 +72,32 @@ pipeline {
                 '''
             }
         }
+
+        stage('Import GPG Key') {
+            steps {
+                withCredentials([
+                    file(credentialsId: 'gpg-private-key', variable: 'GPG_KEY')
+                ]) {
+                    sh '''
+                        gpg --batch --import "$GPG_KEY"
+                    '''
+                }
+            }
+        }
+
+        stage('Publish Artifact to Nexus') {
+            steps {
+                withCredentials([
+                    string(credentialsId: 'gpg-passphrase', variable: 'GPG_PASSPHRASE')
+                ]) {
+                    sh '''
+                        ./mvnw deploy \
+                        -DskipTests \
+                        -Dgpg.passphrase="$GPG_PASSPHRASE"
+                    '''
+                }
+            }
+        }
         
         
     }
