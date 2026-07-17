@@ -62,8 +62,7 @@ class MySqlIntegrationTests {
 	void findAll() {
 		vets.findAll();
 		vets.findAll(); // served from cache
-	}
-
+		
 	@Test
 	void ownerDetails() {
 		RestTemplate template = builder.baseUri("http://localhost:" + port).build();
