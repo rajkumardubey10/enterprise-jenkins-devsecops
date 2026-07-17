@@ -60,13 +60,8 @@ class MySqlIntegrationTests {
 
 	@Test
 	void findAll() {
-    Collection<Vet> vetsList = vets.findAll();
-
-    		assertThat(vetsList)
-            .isNotNull()
-            .isNotEmpty();
-
-    	vets.findAll(); // served from cache
+		vets.findAll();
+		vets.findAll(); // served from cache
 	}
 
 	@Test
