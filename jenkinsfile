@@ -106,9 +106,9 @@ pipeline {
 
         stage('Publish Artifact to Nexus') {
             steps {
-                configFileProvider([configFile(fileId: 'Nexus-Credential', variable: 'nexus-artifactory-upload')]) {
+                configFileProvider([configFile(fileId: 'Nexus-Credential', variable: 'nexus_artifactory_upload')]) {
                     sh '''
-                        ./mvnw deploy -s $nexus-artifactory-upload \
+                        ./mvnw deploy -s $nexus_artifactory_upload \
                         -DskipTests=true \
                         
                     '''
