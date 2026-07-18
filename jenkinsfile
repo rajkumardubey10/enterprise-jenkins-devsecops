@@ -106,17 +106,13 @@ pipeline {
 
         stage('Publish Artifact to Nexus') {
             steps {
-                withCredentials([
-                    string(credentialsId: 'gpg-passphrase', variable: 'GPG_PASSPHRASE'),
-                    string(credentialsId: 'gpg-key-id', variable: 'GPG_KEY_ID')
-                ]) {
+                configFileProvider([configFile(fileId: 'Nexus-Credential', variable: 'nexus-artifactory-upload')]) {
                     sh '''
-                        ./mvnw deploy \
-                        -DskipTests \
-                        -Dgpg.passphrase="$GPG_PASSPHRASE" \
-                        -Dgpg.keyname="$GPG_KEY_ID"
+                        ./mvnw deploy -s $nexus-artifactory-upload \
+                        -DskipTests=true \
+                        
                     '''
-                }
+            } 
             }
         }
         
