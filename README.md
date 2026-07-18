@@ -288,7 +288,7 @@ This approach keeps credentials outside the source code.
 
 # 🔒 Jenkins Credentials
 
-<img width="1366" height="768" alt="Nexus-connect-cred-screenshot" src="https://github.com/user-attachments/assets/27084721-52c4-4cd8-8c31-c61e7ef70e8c" />
+<img width="1366" height="768" alt="Image" src="https://github.com/user-attachments/assets/21f58ca8-5365-43c3-af93-ddc16c3acbfa" />
 
 The following credentials are securely stored inside Jenkins.
 
