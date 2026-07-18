@@ -6,6 +6,10 @@ pipeline {
         
     }
 
+    environment {
+        MAVEN_OPTS = '-Dgpg.pinentry-mode=loopback'
+    }
+
     stages {
         stage('Git Checkout') {
             steps {
@@ -39,9 +43,21 @@ pipeline {
             }
         }
         
-        stage('Build & Unit Test') {
+        stage('Build, Test & Sign') {
             steps {
-                sh './mvnw clean verify'
+
+                withCredentials([
+                    string(credentialsId: 'gpg-passphrase', variable: 'GPG_PASSPHRASE'),
+                    string(credentialsId: 'gpg-key-id', variable: 'GPG_KEY_ID')
+                ]) {
+
+                    sh '''
+                    ./mvnw clean verify \
+                      -Dgpg.passphrase="$GPG_PASSPHRASE" \
+                      -Dgpg.keyname="$GPG_KEY_ID"
+                    '''
+                }
+
             }
         }
         
@@ -91,12 +107,14 @@ pipeline {
         stage('Publish Artifact to Nexus') {
             steps {
                 withCredentials([
-                    string(credentialsId: 'gpg-passphrase', variable: 'GPG_PASSPHRASE')
+                    string(credentialsId: 'gpg-passphrase', variable: 'GPG_PASSPHRASE'),
+                    string(credentialsId: 'gpg-key-id', variable: 'GPG_KEY_ID')
                 ]) {
                     sh '''
                         ./mvnw deploy \
                         -DskipTests \
-                        -Dgpg.passphrase="$GPG_PASSPHRASE"
+                        -Dgpg.passphrase="$GPG_PASSPHRASE" \
+                        -Dgpg.keyname="$GPG_KEY_ID"
                     '''
                 }
             }
