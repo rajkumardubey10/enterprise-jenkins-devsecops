@@ -92,7 +92,7 @@ pipeline {
         stage('Trivy SBOM Scan') {
             steps {
                 sh '''
-                trivy sbom target/cyclonedx.json \
+                trivy sbom target/classes/META-INF/sbom/application.cdx.json \
                 --timeout 15m \
                 --format json \
                 --output trivy-sbom-report.json \
