@@ -1,3 +1,398 @@
+# 🚀 Enterprise DevSecOps Jenkins CI Pipeline
+
+![Java](https://img.shields.io/badge/Java-17-blue)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.x-green)
+![Jenkins](https://img.shields.io/badge/Jenkins-CI-red)
+![Maven](https://img.shields.io/badge/Maven-3.9-orange)
+![SonarQube](https://img.shields.io/badge/SonarQube-Code_Quality-brightgreen)
+![Nexus](https://img.shields.io/badge/Nexus-Repository-blueviolet)
+![Trivy](https://img.shields.io/badge/Trivy-Security-blue)
+![GPG](https://img.shields.io/badge/GPG-Signed-success)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+
+---
+
+> An enterprise-grade DevSecOps CI Pipeline for Java Spring Boot applications using Jenkins, Maven, SonarQube, Gitleaks, GPG, Trivy SBOM Scan, and Nexus Repository Manager.
+
+---
+
+## 📌 Project Status
+
+> **Current Phase:** CI Pipeline Completed ✅
+
+### Completed
+
+- ✅ Git Checkout
+- ✅ Secret Scanning (Gitleaks)
+- ✅ Maven Build
+- ✅ Unit Testing
+- ✅ JaCoCo Code Coverage
+- ✅ GPG Artifact Signing
+- ✅ CycloneDX SBOM Generation
+- ✅ SonarQube Static Code Analysis
+- ✅ Sonar Quality Gate Validation
+- ✅ Trivy SBOM Vulnerability Scan
+- ✅ Publish Signed Artifact to Nexus
+
+### Upcoming
+
+- ⏳ Docker Image Build
+- ⏳ Docker Image Scan (Trivy)
+- ⏳ Cosign Image Signing
+- ⏳ Push Docker Image to Registry
+- ⏳ Kubernetes Deployment
+- ⏳ Health Check
+- ⏳ Smoke Test
+- ⏳ GitOps using ArgoCD
+- ⏳ Rollback Strategy
+- ⏳ Slack Notification
+
+---
+
+# 📖 Project Overview
+
+This project demonstrates how an enterprise DevSecOps CI pipeline is implemented for a Java Spring Boot application.
+
+The pipeline integrates multiple security, quality, and artifact management tools to ensure that every code change is verified before deployment.
+
+The objective of this project is to simulate a real enterprise CI workflow where security and quality checks are enforced before artifacts are published.
+
+---
+
+# 🏗 CI Pipeline Architecture
+
+```text
+Developer
+     │
+     ▼
+ GitHub Repository
+     │
+     ▼
+ Jenkins Pipeline
+     │
+ ├── Git Checkout
+ ├── Secret Scan (Gitleaks)
+ ├── Build & Unit Test
+ ├── GPG Artifact Signing
+ ├── SonarQube Analysis
+ ├── Quality Gate
+ ├── CycloneDX SBOM
+ ├── Trivy SBOM Scan
+ └── Publish Artifact to Nexus
+```
+
+---
+
+# 🛠 Technology Stack
+
+| Category | Tools |
+|-----------|-------|
+| CI/CD | Jenkins |
+| Build Tool | Maven Wrapper |
+| Language | Java 17 |
+| Framework | Spring Boot |
+| Code Quality | SonarQube |
+| Code Coverage | JaCoCo |
+| Secret Detection | Gitleaks |
+| SBOM | CycloneDX Maven Plugin |
+| Vulnerability Scan | Trivy |
+| Artifact Signing | GPG |
+| Artifact Repository | Sonatype Nexus |
+| Source Control | GitHub |
+
+---
+
+# 🔄 Jenkins Pipeline Flow
+
+```text
+Git Checkout
+      │
+      ▼
+Secret Scan (Gitleaks)
+      │
+      ▼
+Prepare Build
+      │
+      ▼
+Build, Test & Sign
+      │
+      ▼
+SonarQube Analysis
+      │
+      ▼
+Quality Gate
+      │
+      ▼
+Trivy SBOM Scan
+      │
+      ▼
+Publish Artifact to Nexus
+```
+
+---
+
+# 📷 Jenkins Pipeline Execution
+
+<img width="1366" height="768" alt="CI_Pipeline_stage" src="https://github.com/user-attachments/assets/5fe3760d-102e-419c-84d9-7a609e0003ce" />
+
+The pipeline executes multiple quality and security gates before publishing artifacts into Nexus Repository.
+
+Stages included:
+
+- Git Checkout
+- Secret Scan
+- Build & Test
+- GPG Signing
+- SonarQube Analysis
+- Quality Gate
+- Trivy SBOM Scan
+- Nexus Deployment
+
+---
+
+# 🔐 Secret Scanning
+
+The pipeline performs secret scanning using **Gitleaks** before the application is built.
+
+It detects accidentally committed
+
+- AWS Keys
+- API Keys
+- Passwords
+- Tokens
+- Private Keys
+
+If any secret is detected, the pipeline fails immediately.
+
+---
+
+# ⚙ Build, Test & GPG Signing
+
+The Maven Wrapper performs
+
+- Project Compilation
+- Unit Testing
+- JaCoCo Code Coverage
+- SBOM Generation
+- Artifact Signing using GPG
+
+All generated Maven artifacts are digitally signed before publishing.
+
+---
+
+# 📊 SonarQube Code Quality Analysis
+
+<img width="1366" height="768" alt="petclinic-qualitygate" src="https://github.com/user-attachments/assets/1ecc6e60-cd48-4214-bf16-187c8edc671c" />
+
+SonarQube performs static code analysis and validates the project against the configured Quality Gate.
+
+### Checks Performed
+
+- Bugs
+- Vulnerabilities
+- Security Hotspots
+- Code Smells
+- Reliability
+- Maintainability
+- Test Coverage
+
+---
+
+# ✅ Sonar Quality Gate
+
+The Jenkins pipeline waits until SonarQube finishes the analysis.
+
+If the Quality Gate fails, the pipeline is stopped automatically and artifact publishing is prevented.
+
+This ensures that only high-quality code is published.
+
+---
+
+# 📦 CycloneDX SBOM Generation
+
+During the Maven build, a Software Bill of Materials (SBOM) is generated using the CycloneDX Maven Plugin.
+
+The generated SBOM contains all application dependencies and their versions.
+
+---
+
+# 🛡 Trivy SBOM Vulnerability Scan
+
+Instead of scanning only the source code, Trivy scans the generated CycloneDX SBOM.
+
+This allows early detection of
+
+- Known CVEs
+- Vulnerable dependencies
+- Security issues in third-party libraries
+
+---
+
+# 📦 Publish Artifact to Nexus Repository
+
+<img width="1366" height="768" alt="nexus-snapshot-artifactory" src="https://github.com/user-attachments/assets/79d5b03f-da54-4cf9-bfcc-b0b2aa662070" />
+
+
+After all security and quality checks pass successfully, Jenkins publishes the signed Maven artifacts into Sonatype Nexus Repository Manager.
+
+Uploaded artifacts include
+
+- JAR
+- POM
+- CycloneDX SBOM
+- GPG Signature
+- SHA1
+- MD5
+- Maven Metadata
+
+---
+
+# ⚙ Maven Distribution Management
+
+<img width="1366" height="768" alt="artifacts-upload-config-screenshot" src="https://github.com/user-attachments/assets/1bfe9329-05cd-4e66-b70c-7850cc11f8fa" />
+
+The project uses Maven Distribution Management to automatically publish artifacts into the appropriate Nexus repository.
+
+```xml
+<distributionManagement>
+
+    <repository>
+        <id>maven-releases</id>
+        <url>http://localhost:8081/repository/maven-releases/</url>
+    </repository>
+
+    <snapshotRepository>
+        <id>maven-snapshots</id>
+        <url>http://localhost:8081/repository/maven-snapshots/</url>
+    </snapshotRepository>
+
+</distributionManagement>
+```
+
+---
+
+# 🔑 Jenkins Managed Maven Settings
+
+<img width="1366" height="768" alt="Nexus-connect-cred-screenshot" src="https://github.com/user-attachments/assets/27084721-52c4-4cd8-8c31-c61e7ef70e8c" />
+
+Instead of storing Nexus credentials inside the project, Jenkins injects them dynamically using the Config File Provider Plugin.
+
+Configured repositories
+
+- maven-releases
+- maven-snapshots
+
+This approach keeps credentials outside the source code.
+
+---
+
+# 🔒 Jenkins Credentials
+
+<img width="1366" height="768" alt="Nexus-connect-cred-screenshot" src="https://github.com/user-attachments/assets/27084721-52c4-4cd8-8c31-c61e7ef70e8c" />
+
+The following credentials are securely stored inside Jenkins.
+
+| Credential | Purpose |
+|------------|----------|
+| GitHub Token | Repository Checkout |
+| Nexus Credentials | Artifact Upload |
+| Sonar Token | Sonar Authentication |
+| GPG Private Key | Artifact Signing |
+| GPG Passphrase | GPG Unlock |
+| GPG Key ID | Signing Identity |
+
+---
+
+# ✅ Build Summary
+
+| Stage | Status |
+|---------|--------|
+| Git Checkout | ✅ |
+| Secret Scan | ✅ |
+| Build | ✅ |
+| Unit Test | ✅ |
+| JaCoCo Coverage | ✅ |
+| GPG Signing | ✅ |
+| SonarQube Analysis | ✅ |
+| Quality Gate | ✅ |
+| CycloneDX SBOM | ✅ |
+| Trivy SBOM Scan | ✅ |
+| Publish to Nexus | ✅ |
+
+---
+
+# 💡 Challenges Solved
+
+During the implementation of this project, several enterprise CI/CD issues were encountered and resolved.
+
+### Maven GPG Signing
+
+Configured Jenkins to securely import private keys and sign Maven artifacts.
+
+---
+
+### Nexus Authentication
+
+Integrated Jenkins Config File Provider Plugin with Maven.
+
+Resolved
+
+- Server ID mismatch
+- Maven settings configuration
+- Jenkins credential mapping
+- Environment variable naming issue (`-` vs `_`)
+
+---
+
+### SonarQube Quality Gate
+
+Integrated Jenkins with SonarQube and configured the pipeline to stop automatically whenever the Quality Gate fails.
+
+---
+
+# 🚀 Future Enhancements
+
+The next phase of this project will extend the CI pipeline into a complete enterprise CI/CD pipeline.
+
+- Docker Image Build
+- Docker Image SBOM
+- Trivy Image Scan
+- Cosign Image Signing
+- Push Image to Docker Registry
+- Kubernetes Deployment
+- Readiness & Liveness Probes
+- Health Check
+- Smoke Test
+- GitOps Deployment using ArgoCD
+- Automatic Rollback
+- Slack Notifications
+
+---
+
+# 📚 Key Learning Outcomes
+
+- Enterprise Jenkins Pipeline Design
+- Secure Credential Management
+- Maven Artifact Signing
+- SonarQube Quality Gates
+- Software Bill of Materials (SBOM)
+- Dependency Vulnerability Scanning
+- Nexus Artifact Repository
+- DevSecOps Best Practices
+
+---
+
+# 👨‍💻 Author
+
+**Rajkumar Dubey**
+
+GitHub: https://github.com/rajkumardubey10
+
+---
+
+⭐ If you found this project useful, consider giving it a Star.
+
+
 # Spring PetClinic Sample Application [![Build Status](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml/badge.svg)](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml)[![Build Status](https://github.com/spring-projects/spring-petclinic/actions/workflows/gradle-build.yml/badge.svg)](https://github.com/spring-projects/spring-petclinic/actions/workflows/gradle-build.yml)
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/spring-projects/spring-petclinic) [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=7517918)
