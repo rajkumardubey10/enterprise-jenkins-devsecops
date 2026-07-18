@@ -12,7 +12,7 @@ pipeline {
                 git branch: 'main', credentialsId: 'Github-token', url: 'https://github.com/rajkumardubey10/enterprise-jenkins-devsecops.git'
             }
         }
-
+        
         stage('Import GPG Key') {
             steps {
                 withCredentials([
@@ -36,18 +36,6 @@ pipeline {
         stage('Prepare Build') {
             steps {
                sh 'chmod +x mvnw'
-            }
-        }
-
-        stage('Import GPG Key') {
-            steps {
-                withCredentials([
-                    file(credentialsId: 'gpg-private-key', variable: 'GPG_KEY')
-                ]) {
-                    sh '''
-                        gpg --batch --import "$GPG_KEY"
-                    '''
-                }
             }
         }
         
