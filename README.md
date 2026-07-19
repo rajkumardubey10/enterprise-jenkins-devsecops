@@ -577,11 +577,3 @@ The Spring PetClinic sample application is released under version 2.0 of the [Ap
 
 
 
-<img width="1366" height="768" alt="nexus_config_setting" src="https://github.com/user-attachments/assets/10990a9e-bd37-4a1a-ae21-50406b3a815a" />
-<img width="1366" height="768" alt="CI_Pipeline_stage" src="https://github.com/user-attachments/assets/5fe3760d-102e-419c-84d9-7a609e0003ce" />
-<img width="1366" height="768" alt="Screenshot 2026-07-17 172032" src="https://github.com/user-attachments/assets/aba70a10-8d9a-4c01-ac5e-f3a8e2bd8be8" />
-<img width="1366" height="768" alt="petclinic-qualitygate" src="https://github.com/user-attachments/assets/1ecc6e60-cd48-4214-bf16-187c8edc671c" />
-<img width="1366" height="768" alt="nexus-snapshot-artifactory" src="https://github.com/user-attachments/assets/79d5b03f-da54-4cf9-bfcc-b0b2aa662070" />
-<img width="1366" height="768" alt="Nexus-connect-cred-screenshot" src="https://github.com/user-attachments/assets/27084721-52c4-4cd8-8c31-c61e7ef70e8c" />
-<img width="1366" height="768" alt="artifacts-upload-config-screenshot" src="https://github.com/user-attachments/assets/1bfe9329-05cd-4e66-b70c-7850cc11f8fa" />
-
