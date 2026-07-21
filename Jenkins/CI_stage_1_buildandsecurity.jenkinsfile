@@ -115,6 +115,42 @@ pipeline {
             } 
             }
         }
+
+        stage('Capture Artifact Metadata') {
+            steps {
+                script {
+
+                    // Git Commit SHA
+                    env.GIT_SHA = sh(
+                        script: 'git rev-parse --short HEAD',
+                        returnStdout: true
+                    ).trim()
+
+                    // Maven Project Version
+                    env.PROJECT_VERSION = sh(
+                        script: "./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout",
+                        returnStdout: true
+                    ).trim()
+
+                    // Artifact Name
+                    env.ARTIFACT_ID = sh(
+                        script: "./mvnw help:evaluate -Dexpression=project.artifactId -q -DforceStdout",
+                        returnStdout: true
+                    ).trim()
+
+                    echo """
+        ================ Artifact Metadata ================
+
+        Git SHA          : ${env.GIT_SHA}
+        Artifact ID      : ${env.ARTIFACT_ID}
+        Project Version  : ${env.PROJECT_VERSION}
+        Build Number     : ${env.BUILD_NUMBER}
+
+        ===================================================
+        """
+                }
+            }
+        }
         
         
     }
