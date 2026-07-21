@@ -16,7 +16,8 @@ pipeline {
                 git branch: 'main', credentialsId: 'Github-token', url: 'https://github.com/rajkumardubey10/enterprise-jenkins-devsecops.git'
             }
         }
-        
+
+
         stage('Import GPG Key') {
             steps {
                 withCredentials([
@@ -138,7 +139,7 @@ pipeline {
                         returnStdout: true
                     ).trim()
 
-                    echo """
+                    echo """ 
         ================ Artifact Metadata ================
 
         Git SHA          : ${env.GIT_SHA}
