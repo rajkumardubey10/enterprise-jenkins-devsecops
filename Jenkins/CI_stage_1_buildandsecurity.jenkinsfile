@@ -109,7 +109,7 @@ pipeline {
             steps {
                 configFileProvider([configFile(fileId: 'Nexus-Credential', variable: 'nexus_artifactory_upload')]) {
                     sh '''
-                        ./mvnw deploy -s $nexus_artifactory_upload \
+                        ./mvnw deploy -s "$nexus_artifactory_upload" \
                         -DskipTests=true \
                         
                     '''
