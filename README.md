@@ -1,3 +1,4 @@
+
 # 🚀 Enterprise DevSecOps Jenkins CI Pipeline
 
 ![Java](https://img.shields.io/badge/Java-17-blue)
@@ -15,7 +16,15 @@
 > An enterprise-grade DevSecOps CI Pipeline for Java Spring Boot applications using Jenkins, Maven, SonarQube, Gitleaks, GPG, Trivy SBOM Scan, and Nexus Repository Manager.
 
 ---
+
 ## Pipeline Architecture 
+<img width="1536" height="1024" alt="enterprise_jenkins_pipeline_architecture" src="https://github.com/user-attachments/assets/78dc3ffd-c929-4e9d-8b6e-aa7c9cb09754" />
+
+---
+
+<img width="1536" height="1024" alt="ChatGPT Image Jul 22, 2026, 04_23_26 PM" src="https://github.com/user-attachments/assets/053c9f9e-38c3-4511-a0d6-696388d184d8" />
+
+---
 
 <img width="1774" height="887" alt="Image" src="https://github.com/user-attachments/assets/8d9b1723-74b9-4fbc-81a6-e54ef7f8200d" />
 
