@@ -94,6 +94,14 @@ pipeline {
             }
         }
 
+        stage('Validate SBOM') {
+            steps {
+                sh '''
+                test -f target/classes/META-INF/sbom/application.cdx.json
+                '''
+            }
+        }
+
         stage('Trivy SBOM Scan') {
             steps {
                 sh '''
