@@ -8,6 +8,10 @@ pipeline {
 
     environment {
         MAVEN_OPTS = '-Dgpg.pinentry-mode=loopback'
+
+        NEXUS_URL = "http://localhost:8081"
+
+        NEXUS_REPOSITORY = "maven-snapshots"
     }
 
     stages {
