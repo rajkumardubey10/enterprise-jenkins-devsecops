@@ -196,15 +196,18 @@ pipeline {
                         def downloadUrl =
                             "${env.NEXUS_URL}/repository/${env.NEXUS_REPOSITORY}/${groupPath}/${artifactId}/${baseVersion}/${artifactName}"
 
-                        writeJSON(
+                        def jsonContent = """
+                        {
+                        "artifactName": "${artifactName}",
+                        "resolvedVersion": "${resolvedVersion}",
+                        "repository": "${env.NEXUS_REPOSITORY}",
+                        "downloadUrl": "${downloadUrl}"
+                        }
+                        """
+
+                        writeFile(
                             file: 'artifact-metadata.json',
-                            json: [
-                                artifactName    : artifactName,
-                                resolvedVersion : resolvedVersion,
-                                repository      : env.NEXUS_REPOSITORY,
-                                downloadUrl     : downloadUrl
-                            ],
-                            pretty: 4
+                            text: jsonContent
                         )
 
                         archiveArtifacts(
