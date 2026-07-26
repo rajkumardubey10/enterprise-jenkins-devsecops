@@ -229,6 +229,20 @@ pipeline {
                 }
             }
         }
+
+        stage('Trigger CI Stage 2') {
+            steps {
+                script {
+                    build job: 'CI-Pipeline-stage-2 (Container Build and Security)',
+                        wait: false,
+                        parameters: [
+                            string(name: 'ARTIFACT_NAME', value: env.ARTIFACT_NAME),
+                            string(name: 'RESOLVED_VERSION', value: env.RESOLVED_VERSION),
+                            string(name: 'DOWNLOAD_URL', value: env.DOWNLOAD_URL)
+                        ]
+                }
+            }
+        }
         
         
     }
