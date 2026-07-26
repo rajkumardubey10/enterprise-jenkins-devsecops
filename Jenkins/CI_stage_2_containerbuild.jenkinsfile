@@ -1,6 +1,13 @@
 pipeline {
     agent any
 
+
+    parameters {
+    string(name: 'ARTIFACT_NAME', defaultValue: '', description: 'Artifact Name')
+    string(name: 'RESOLVED_VERSION', defaultValue: '', description: 'Resolved Maven Version')
+    string(name: 'DOWNLOAD_URL', defaultValue: '', description: 'Artifact Download URL')
+    }
+
     tools {
         jdk 'JDK17'
         
@@ -13,8 +20,25 @@ pipeline {
                 git branch: 'main', credentialsId: 'Github-token', url: 'https://github.com/rajkumardubey10/enterprise-jenkins-devsecops.git'
             }
         }
+
+        stage('Read Artifact Metadata') {
+            steps {
+                script {
+                    if (!params.DOWNLOAD_URL || !params.RESOLVED_VERSION || !params.ARTIFACT_NAME) {
+                        error "Required artifact metadata was not provided by CI Stage 1."
+                    }
+                    env.ARTIFACT_NAME = params.ARTIFACT_NAME
+                    env.RESOLVED_VERSION = params.RESOLVED_VERSION
+                    env.DOWNLOAD_URL = params.DOWNLOAD_URL
+
+                    echo "Artifact Name     : ${env.ARTIFACT_NAME}"
+                    echo "Resolved Version  : ${env.RESOLVED_VERSION}"
+                    echo "Download URL      : ${env.DOWNLOAD_URL}"
+                }
+            }
+        }
         
-        stage('Download Signed Artifact from Nexus') {
+        stage('Download Signed Artifact') {
             steps {
                 withCredentials([
                     usernamePassword(
@@ -24,23 +48,15 @@ pipeline {
                     )
                 ]) {
                     sh '''
-                        echo "Creating artifact directory..."
-                        mkdir -p artifact
-        
-                        echo "Downloading signed JAR..."
-        
-                        curl -u "$NEXUS_USER:$NEXUS_PASS" \
-                            -o artifact/app.jar \
-                            "http://localhost:8081/repository/maven-snapshots/org/springframework/samples/spring-petclinic/4.0.0-SNAPSHOT/spring-petclinic-4.0.0-20260718.162536-1.jar"
-        
-                        echo "Downloading GPG signature..."
-        
-                        curl -u "$NEXUS_USER:$NEXUS_PASS" \
-                            -o artifact/app.jar.asc \
-                            "http://localhost:8081/repository/maven-snapshots/org/springframework/samples/spring-petclinic/4.0.0-SNAPSHOT/spring-petclinic-4.0.0-20260718.162536-1.jar.asc"
-        
-                        echo "Downloaded files:"
-                        ls -lh artifact
+                    mkdir -p artifact
+
+                    curl -u "$NEXUS_USER:$NEXUS_PASS" \
+                        -o artifact/app.jar \
+                        "$DOWNLOAD_URL"
+
+                    curl -u "$NEXUS_USER:$NEXUS_PASS" \
+                        -o artifact/app.jar.asc \
+                        "${DOWNLOAD_URL}.asc"
                     '''
                 }
             }
@@ -76,28 +92,14 @@ pipeline {
             }
         }
         
-        stage('Check Relevant Changes') {
-            steps {
-                script {
-                    def changedFiles = sh(
-                        script: "git diff --name-only HEAD~1 HEAD",
-                        returnStdout: true
-                    ).trim()
         
-                    echo "Changed files:\n${changedFiles}"
-        
-                    def shouldBuild =
-                        changedFiles =~ /(src\/|pom\.xml|Dockerfile|mvnw|\.dockerignore)/
-        
-                    env.BUILD_IMAGE = shouldBuild ? "true" : "false"
-                }
-            }
-        }
         stage('Build Docker Image') {
             steps {
                 sh '''
                     docker build \
-                        -t rajkumardubey10/spring-petclinic:${SHORT_SHA} .
+                        -t rajkumardubey10/spring-petclinic:${RESOLVED_VERSION} \
+                        -t rajkumardubey10/spring-petclinic:latest \
+                        .
                 '''
             }
         }
