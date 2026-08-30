@@ -103,5 +103,28 @@ pipeline {
                 '''
             }
         }
+        stage('Generate Image SBOM') {
+            steps {
+                sh '''
+               set -e
+
+            IMAGE="rajkumardubey10/spring-petclinic:${RESOLVED_VERSION}"
+
+            echo "Generating SBOM for Docker image:"
+            echo "$IMAGE"
+
+            mkdir -p security
+
+            trivy image \
+                --format cyclonedx \
+                --output security/image-sbom.json \
+                "$IMAGE"
+
+            echo "Image SBOM generated successfully."
+
+            ls -lh security/image-sbom.json
+        '''
+    }
+}
     }
 }
