@@ -122,7 +122,7 @@ pipeline {
 
             echo "Image SBOM generated successfully."
 
-            ls -lh security/image-sbom.json
+            ls -lh security/image-sbom.json 
         '''
     }
 }
