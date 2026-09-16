@@ -106,25 +106,25 @@ pipeline {
         stage('Generate Image SBOM') {
             steps {
                 sh '''
-               set -e
+                    set -e
 
-            IMAGE="rajkumardubey10/spring-petclinic:${RESOLVED_VERSION}"
+                    IMAGE="rajkumardubey10/spring-petclinic:${RESOLVED_VERSION}"
 
-            echo "Generating SBOM for Docker image:"
-            echo "$IMAGE"
+                    echo "Generating SBOM for Docker image:"
+                    echo "$IMAGE"
 
-            mkdir -p security
+                    mkdir -p security
 
-            trivy image \
-                --format cyclonedx \
-                --output security/image-sbom.json \
-                "$IMAGE"
+                    trivy image \
+                        --format cyclonedx \
+                        --output security/image-sbom.json \
+                        "$IMAGE"
 
-            echo "Image SBOM generated successfully."
+                    echo "Image SBOM generated successfully."
 
-            ls -lh security/image-sbom.json 
-        '''
-    }
-}
+                    ls -lh security/image-sbom.json 
+                '''
+            }
+        }
     }
 }
