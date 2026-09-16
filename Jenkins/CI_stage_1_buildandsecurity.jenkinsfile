@@ -21,6 +21,18 @@ pipeline {
             }
         }
 
+        stage('Workspace Cleanup') {
+            steps {
+                sh '''
+                    echo "Cleaning generated security reports..."
+
+                    rm -f trivy-sbom-report.json
+                    rm -rf security
+
+                    echo "Workspace cleanup completed."
+                '''
+            }
+        }
 
         stage('Import GPG Key') {
             steps {
@@ -117,7 +129,7 @@ pipeline {
                     --exit-code 0
 
                     echo "Trivy report generated:"
-                    
+
                     ls -lh security/trivy-sbom-report.json
                 '''
             }
