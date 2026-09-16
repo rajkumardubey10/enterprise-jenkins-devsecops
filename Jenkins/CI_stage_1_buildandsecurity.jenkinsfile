@@ -105,12 +105,19 @@ pipeline {
         stage('Trivy SBOM Scan') {
             steps {
                 sh '''
-                trivy sbom target/classes/META-INF/sbom/application.cdx.json \
-                --timeout 15m \
-                --format json \
-                --output trivy-sbom-report.json \
-                --severity HIGH,CRITICAL \
-                --exit-code 0
+                    set -e 
+
+                    mkdir -p security
+                    
+                    trivy sbom target/classes/META-INF/sbom/application.cdx.json \
+                    --timeout 15m \
+                    --format json \
+                    --output trivy-sbom-report.json \
+                    --severity HIGH,CRITICAL \
+                    --exit-code 0
+
+                    echo "Trivy report generated:"
+                    ls -lh security/trivy-sbom-report.json
                 '''
             }
         }
