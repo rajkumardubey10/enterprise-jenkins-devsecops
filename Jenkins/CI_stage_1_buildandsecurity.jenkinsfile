@@ -124,7 +124,7 @@ pipeline {
                     trivy sbom target/classes/META-INF/sbom/application.cdx.json \
                     --timeout 15m \
                     --format json \
-                    --output trivy-sbom-report.json \
+                    --output security/trivy-sbom-report.json \
                     --severity HIGH,CRITICAL \
                     --exit-code 0
 
