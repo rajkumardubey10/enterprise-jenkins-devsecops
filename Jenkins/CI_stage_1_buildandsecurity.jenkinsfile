@@ -108,7 +108,7 @@ pipeline {
                     set -e 
 
                     mkdir -p security
-                    
+
                     trivy sbom target/classes/META-INF/sbom/application.cdx.json \
                     --timeout 15m \
                     --format json \
@@ -117,6 +117,7 @@ pipeline {
                     --exit-code 0
 
                     echo "Trivy report generated:"
+                    
                     ls -lh security/trivy-sbom-report.json
                 '''
             }
